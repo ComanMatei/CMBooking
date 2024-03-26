@@ -1,4 +1,4 @@
-package com.booking.CMBookingbackend.dto;
+package com.booking.CMBookingbackend.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleDto {
-    private Long id;
-    private String name;
+public class LoginResponse {
+    String message;
+    Boolean status;
 }

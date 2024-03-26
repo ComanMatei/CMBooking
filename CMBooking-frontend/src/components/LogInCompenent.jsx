@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const LogInComponent = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('')
-
-    const { id } = useParams();
 
     const [errors, setErrors] = useState({
         email: '',
@@ -17,10 +16,29 @@ const LogInComponent = () => {
     const handleEmail = (e) => setEmail(e.target.value);
     const handlePassword = (e) => setPassword(e.target.value);
 
-    const LogIn = (e) => {
+    async function login(e) {
         e.preventDefault();
-
-        navigator('/registration');
+        if (validateForm()) {
+            try {
+                const response = await axios.post("http://localhost:8080/api/users/login", {
+                    email: email,
+                    password: password,
+                });
+    
+                console.log(response.data);
+    
+                if (response.data.message === "Email not exist") {
+                    alert("Email does not exist");
+                } else if (response.data.message === "Login Success") {
+                    // Redirect to the home page or any other appropriate route
+                    navigator('/');
+                } else {
+                    alert("Incorrect Email and Password combination");
+                }
+            } catch (error) {
+                alert(error);
+            }
+        }
     }
 
     const validateForm = () => {
@@ -54,33 +72,35 @@ const LogInComponent = () => {
                     <h2 className='text-center'> Please Log In</h2>
                     <div className='card-body'>
                         <form>
-                            <div className='form-group mb-2'>
-                                <label className='form-label'>Email:</label>
-                                <input
-                                    type='text'
-                                    placeholder='Enter your email'
-                                    name='email'
-                                    value={email}
-                                    className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-                                    onChange={handleEmail}
-                                />
+                        <div className='form-group mb-2'>
+                                <label className='form-laber'>Email:</label>
+                                <input 
+                                type='email'
+                                placeholder='Enter your email'
+                                name='email' 
+                                value={email}
+                                className={`form-control ${errors.email ? 'is-invalid': ''}`}
+                                onChange={handleEmail}
+                                >
+                                </input>
                                 {errors.email && <div className='invalid-feedback'> {errors.email} </div>}
-                            </div>
+                            </div> 
 
                             <div className='form-group mb-2'>
-                                <label className='form-label'>Password:</label>
-                                <input
-                                    type='password'
-                                    placeholder='Enter your Password'
-                                    name='password'
-                                    value={password}
-                                    className={`form-control ${errors.password ? 'is-invalid' : ''}`}
-                                    onChange={handlePassword}
-                                />
+                                <label className='form-laber'>Password:</label>
+                                <input 
+                                type='password'
+                                placeholder='Enter your password'
+                                name='password' 
+                                value={password}
+                                className={`form-control ${errors.password ? 'is-invalid': ''}`}
+                                onChange={handlePassword}
+                                >
+                                </input>
                                 {errors.password && <div className='invalid-feedback'> {errors.password} </div>}
-                            </div>
+                            </div> 
 
-                            <button className='btn btn-success' onClick={LogIn}> Log In  </button>
+                            <button className='btn btn-success' onClick={login}> Log In  </button>
                         </form>
                     </div>
                 </div>

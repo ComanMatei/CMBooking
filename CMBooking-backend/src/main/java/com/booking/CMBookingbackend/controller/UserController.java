@@ -1,6 +1,8 @@
 package com.booking.CMBookingbackend.controller;
 
+import com.booking.CMBookingbackend.dto.LoginDto;
 import com.booking.CMBookingbackend.dto.UserDto;
+import com.booking.CMBookingbackend.response.LoginResponse;
 import com.booking.CMBookingbackend.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,13 @@ public class UserController {
 
         // Returnați răspunsul HTTP cu obiectul UserDto asignat și codul de stare '200 OK'
         return ResponseEntity.ok(assignedUser);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody LoginDto loginDto){
+        LoginResponse loginResponse = userService.loginUser(loginDto);
+
+        return ResponseEntity.ok(loginResponse);
     }
 
     @GetMapping("/users/{id}")
