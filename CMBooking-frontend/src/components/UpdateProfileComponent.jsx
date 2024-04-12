@@ -1,19 +1,21 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import { createUser, assignRoleToUser } from '../service/UserService';
+import { getUser, updateUser } from '../service/UserService';
 
-const ClientRegistrationComponent = () => {
+const UpdateProfileComponent = () => {
 
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [age, setAge] = useState('')
-    const [email, setEmail] = useState('')
     const [city, setCity] = useState('')
+    const [userEmail, setUserEmail] = useState('');
     const [addressStreet, setAddressStreet] = useState('')
     const [addressNumber, setAddressNumber] = useState('')
     const [cui, setCui] = useState('')
-    const [password, setPassword] = useState('')
+    const [roles, setRoles] = useState([]);
+
+    const {email} = useParams();
 
     const [errors, setErrors] = useState({
         firstName: '',
@@ -23,118 +25,54 @@ const ClientRegistrationComponent = () => {
         city: '',
         addressStreet: '',
         addressNumber: '',
-        password: '',
-        cui: ''
+        cui: '',
+        roles: ''
     })
+
+    useEffect(() => {
+        if(email){
+            getUser(email).then((response) => {
+                setFirstName(response.data.firstName);
+                setLastName(response.data.lastName);
+                setAge(response.data.age);
+                setCity(response.data.city);
+                setAddressStreet(response.data.addressStreet);
+                setAddressNumber(response.data.addressNumber);
+                setUserEmail(response.data.email);
+                setRoles(response.data.roles || []);
+                setCui(response.data.cui);
+            }).catch(error => {
+                console.error(error);
+            })
+        }
+    }, [email])
+    
      
     const navigator = useNavigate();
 
     const handleFirstName = (e) => setFirstName(e.target.value);
     const handleLastName = (e) => setLastName(e.target.value);
     const handleAge = (e) => setAge(e.target.value);
-    const handleEmail = (e) => setEmail(e.target.value);
+    const handleUserEmail = (e) => setUserEmail(e.target.value);
     const handleCity = (e) => setCity(e.target.value);
     const handleAddressStreet = (e) => setAddressStreet(e.target.value);
     const handleAddresssNumber = (e) => setAddressNumber(e.target.value);
     const handleCui = (e) => setCui(e.target.value);
-    const handlePassword = (e) => setPassword(e.target.value);
 
-    function registrationForm(e) {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if(validateForm()){
+        const updatedUser = { firstName, lastName, age, city, userEmail, addressStreet, addressNumber, cui, roles };
+        console.log(updatedUser);
 
-            const user = {firstName, lastName, age, email, city, addressStreet, addressNumber, cui, password}
-            console.log(user)
-            
-            // Create user
-            createUser(user).then((response) => {
+        if(email){
+            updateUser(email, updatedUser).then((response) => {
                 console.log(response.data);
-                //Assign roleId(2) to user
-                assignRoleToUser(response.data.id, 2)
-                    .then(() => {
-                        console.log('Role assigned successfully!');
-                        navigator('/');
-                    }) 
             }).catch(error => {
-                console.error(error);
+                console.log(error);
             })
         }
-    }
-
-    function validateForm() {
-        let valid = true;
-
-        const errorsCopy = {... errors}
-
-        if (firstName.trim()) {
-            errorsCopy.firstName = '';
-        } else {
-            errorsCopy.firstName = 'First name is required';
-            valid = false;
-        }
-
-        if (lastName.trim()) {
-            errorsCopy.lastName = '';
-        } else {
-            errorsCopy.lastName = 'Last name is required';
-            valid = false;
-        }
-
-        if (age.trim()) {
-            errorsCopy.age = '';
-        } else {
-            errorsCopy.age = 'Age is required';
-            valid = false;
-        }
-
-        if (email.trim()) {
-            errorsCopy.email = '';
-        } else {
-            errorsCopy.email = 'Email is required';
-            valid = false;
-        }
-
-        if (city.trim()) {
-            errorsCopy.city = '';
-        } else {
-            errorsCopy.city = 'City is required';
-            valid = false;
-        }
-
-        if (addressStreet.trim()) {
-            errorsCopy.addressStreet = '';
-        } else {
-            errorsCopy.addressStreet = 'Street name is required';
-            valid = false;
-        }
-
-        if (addressNumber.trim()) {
-            errorsCopy.addressNumber = '';
-        } else {
-            errorsCopy.addressNumber = 'Street number is required';
-            valid = false;
-        }
-
-        if (cui.trim()) {
-            errorsCopy.cui = '';
-        } else {
-            errorsCopy.cui = 'Cui is required';
-            valid = false;
-        }
-
-
-        if (password.trim()) {
-            errorsCopy.password = '';
-        } else {
-            errorsCopy.password = 'Password is required';
-            valid = false;
-        }
-
-        setErrors(errorsCopy);
-
-        return valid;
-    }
+    }; 
 
     return (
         <div className='container'>
@@ -142,7 +80,7 @@ const ClientRegistrationComponent = () => {
         <div className='row'>
             <div className='card col-md-6 offset-md-3 offset-md-3'>
 
-                <h2 className='text-center'> Registretion Formular </h2>
+                <h2 className='text-center'> Your profile </h2>
 
                 <div className='card-body'>
                     <form>
@@ -250,49 +188,40 @@ const ClientRegistrationComponent = () => {
                                 <input 
                                 type='email'
                                 placeholder='Enter your email'
-                                name='email' 
-                                value={email}
-                                className={`form-control ${errors.email ? 'is-invalid': ''}`}
-                                onChange={handleEmail}
+                                name='userEmail' 
+                                value={userEmail}
+                                readOnly
+                                className={`form-control ${errors.userEmail ? 'is-invalid': ''}`}
+                                onChange={handleUserEmail}
                                 >
                                 </input>
-                                {errors.email && <div className='invalid-feedback'> {errors.email} </div>}
+                                {errors.userEmail && <div className='invalid-feedback'> {errors.userEmail} </div>}
                             </div> 
 
-                            <div className='form-group mb-2'>
-                                    <label className='form-label'>Cui:</label>
-                                    <input 
-                                        type='text'
-                                        placeholder='Enter your cui'
-                                        name='cui' 
-                                        value={cui}
-                                        className={`form-control ${errors.cui ? 'is-invalid': ''}`}
-                                        onChange={handleCui}
-                                    />
-                                    {errors.cui && <div className='invalid-feedback'> {errors.cui} </div>}
-                                </div>
+                            {roles.some(role => role.id === 2) && (
+                                <div className='form-group mb-2'>
+                                <label className='form-label'>CUI:</label>
+                                 <input 
+                                type='text'
+                                placeholder='Enter your cui'
+                                name='cui' 
+                                value={cui}
+                                readOnly
+                                className={`form-control ${errors.cui ? 'is-invalid': ''}`}
+                                onChange={handleCui}
+                                />
+                            {errors.cui && <div className='invalid-feedback'> {errors.cui} </div>}
+                            </div>
+                    )}
 
-                            <div className='form-group mb-2'>
-                                <label className='form-laber'>Password:</label>
-                                <input 
-                                type='password'
-                                placeholder='Enter your password'
-                                name='password' 
-                                value={password}
-                                className={`form-control ${errors.password ? 'is-invalid': ''}`}
-                                onChange={handlePassword}
-                                >
-                                </input>
-                                {errors.password && <div className='invalid-feedback'> {errors.password} </div>}
-                            </div> 
 
-                                <button className='btn btn-success' onClick={registrationForm}> Register </button>
+                            <button className='btn btn-success' onClick={handleSubmit}> Save changes </button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     )
-}
 
-export default ClientRegistrationComponent;
+}
+export default UpdateProfileComponent;

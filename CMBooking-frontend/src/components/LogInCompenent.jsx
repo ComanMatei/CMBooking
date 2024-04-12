@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const LogInComponent = () => {
     const [email, setEmail] = useState('');
@@ -31,7 +31,7 @@ const LogInComponent = () => {
                     alert("Email does not exist");
                 } else if (response.data.message === "Login Success") {
                     // Redirect to the home page or any other appropriate route
-                    navigator('/');
+                    navigator(`/updateProfile/${email}`);
                 } else {
                     alert("Incorrect Email and Password combination");
                 }
@@ -101,13 +101,16 @@ const LogInComponent = () => {
                             </div> 
 
                             <button className='btn btn-success' onClick={login}> Log In  </button>
+
+                            <p className='forgot-password text-right'>
+                                <Link to={'/verify-email'}> Forgot password? </Link>
+                            </p>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-    );
-
-};
+    )
+}
 
 export default LogInComponent;

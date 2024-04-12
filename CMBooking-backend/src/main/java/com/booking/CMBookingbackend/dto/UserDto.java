@@ -1,10 +1,7 @@
 package com.booking.CMBookingbackend.dto;
 
 import com.booking.CMBookingbackend.entity.Role;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Collection;
 
@@ -25,4 +22,9 @@ public class UserDto {
     private String password;
     private String CUI;
     private Collection<Role> roles;
+
+    @Builder
+    public UserDto(String email) {
+        this.email = email;
+    }
 }
