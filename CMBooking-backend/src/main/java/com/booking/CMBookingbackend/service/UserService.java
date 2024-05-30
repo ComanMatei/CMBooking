@@ -2,10 +2,8 @@ package com.booking.CMBookingbackend.service;
 
 import com.booking.CMBookingbackend.dto.LoginDto;
 import com.booking.CMBookingbackend.dto.UserDto;
-import com.booking.CMBookingbackend.entity.Role;
 import com.booking.CMBookingbackend.response.LoginResponse;
-
-import java.util.List;
+import com.booking.CMBookingbackend.response.VerifyResponse;
 
 public interface UserService {
     UserDto createUser(UserDto userDto);
@@ -16,7 +14,7 @@ public interface UserService {
 
     UserDto getUser(String email);
 
-    UserDto findEmail(String email);
+    VerifyResponse findEmail(String email);
 
     UserDto updateForgotPassword(UserDto userDto, UserDto updatedUser);
 

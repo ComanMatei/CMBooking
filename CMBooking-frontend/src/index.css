@@ -1,0 +1,227 @@
+.property__image img {
+    max-width: 200px; 
+    height: auto; 
+    border: 3px solid var(--selective-blue); 
+    aspect-ratio: 1 / 1; 
+    object-fit: cover; 
+    object-position: center;
+    border-radius: var(--radius-circle); 
+    margin-right: 10px;
+}
+
+
+.property__list {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 20px; 
+}
+
+.property__item {
+    display: grid;
+    grid-template-columns: auto 1fr; 
+    gap: 1rem; 
+    background-color: var(--light-gray);
+    padding: 1rem;
+    border-radius: var(--radius-5);
+    cursor: pointer;
+    min-height: max-content;
+    transition: box-shadow .3s; 
+    border: 2px solid var(--border-color); 
+    box-shadow: 0 0 5px 0 rgba(0, 0, 255, 0.3); 
+	margin-right: calc(17% - 10px);
+}
+
+.property__image {
+    grid-column: 1; 
+}
+
+.property__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.property__info {
+    margin-bottom: 1rem;
+}
+
+.property_location,
+.property_price,
+.property_description {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 0.5rem;
+}
+
+.property_location i,
+.property_price i,
+.property_description i {
+    margin-right: 0.5rem;
+}
+
+.bi {
+    vertical-align: middle;
+}
+
+
+.property__buttons {
+    margin-top: 10px; 
+}
+
+.calendar-button {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff; 
+    color: white;
+    border: none; 
+    border-radius: 8px; 
+    cursor: pointer; 
+}
+
+.calendar-dialog {
+    border: 2px solid #1ed2ab;
+    border-radius: 10px; 
+    padding: 20px; 
+    background-color: #beda5c;
+    color: #080808; 
+    width: min-content; 
+    max-width: 80%;
+    max-height: calc(100vh - 70px);
+    overflow-y: auto;
+}
+
+
+.custom-calendar {
+    background-color: #ecbf6a;
+    color: white; 
+}
+
+.custom-calendar .react-calendar__navigation {
+    background-color: #e47643; 
+    color: #fff; 
+}
+
+.Calendar {
+    font-family: Arial, sans-serif;
+  }
+  
+  .Calendar .CalendarMonth {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .Calendar .DayPickerKeyboardShortcuts_buttonReset {
+    display: none;
+  }
+  
+  .Calendar .DayPickerNavigation_button {
+    background-color: #f0f0f0;
+    color: #333;
+    border: none;
+  }
+  
+  .Calendar .DayPickerNavigation_button:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .Calendar .DayPickerNavigation_button--prev {
+    border-radius: 50% 0 0 50%;
+  }
+  
+  .Calendar .DayPickerNavigation_button--next {
+    border-radius: 0 50% 50% 0;
+  }
+  
+  .Calendar .DayPicker {
+    padding: 10px;
+  }
+  
+  .Calendar .DateRangePickerInput {
+    width: 100%;
+  }
+  
+  .Calendar .DateInput {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+  }
+  
+  .Calendar .DateInput_input {
+    border: none;
+    outline: none;
+    width: 80px;
+  }
+  
+  .Calendar .DateInput_input__focused {
+    border-color: #007bff;
+  }
+  
+  .Calendar .DateRangePickerInput_arrow {
+    display: none;
+  }
+  
+  .Calendar .DateRangePickerInput_calendarIcon {
+    margin-left: 10px;
+  }
+  
+  .Calendar .CalendarDay__selected {
+    background-color: #007bff !important;
+    color: #fff;
+  }
+  
+  .Calendar .CalendarDay__selected:hover {
+    background-color: #0056b3 !important;
+  }
+  
+  .Calendar .CalendarDay__hovered_span {
+    background-color: #007bff !important;
+    color: #fff;
+  }
+  
+  .Calendar .DayPicker_weekHeader {
+    color: #333;
+  }
+  
+  .Calendar .DayPicker_weekHeader_ul {
+    padding: 10px;
+  }
+  
+  .Calendar .DayPicker_weekHeader_ul li {
+    display: inline-block;
+    width: 20px;
+    text-align: center;
+    font-size: 12px;
+  }
+  
+  .Calendar .DayPicker_transitionContainer {
+    border-radius: 5px;
+  }
+
+  .custom-calendar .react-calendar__tile--active,
+  .custom-calendar .occupied-date {
+      background-color: #3684d2 !important;
+      color: white !important;
+  }
+  
+  
+  .custom-calendar .occupied-date {
+      background-color: red !important;
+      color: white !important;
+  }
+
+  .alert-full-width {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px; 
+}
+
+
+
+
+
+

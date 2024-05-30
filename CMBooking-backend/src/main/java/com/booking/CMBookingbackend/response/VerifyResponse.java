@@ -1,4 +1,4 @@
-package com.booking.CMBookingbackend.dto;
+package com.booking.CMBookingbackend.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ImageDto {
-    private Long id;
-    private byte[] image1;
-    private byte[] image2;
+public class VerifyResponse {
+    String message;
+    Boolean status;
 }

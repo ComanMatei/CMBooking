@@ -1,13 +1,10 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { getUserByEmail } from '../service/UserService';
 
 const VerifyEmailComponent = () => {
-
     const [email, setEmail] = useState('');
-    const [errors, setErrors] = useState('')
+    const [errors, setErrors] = useState('');
     const navigator = useNavigate();
 
     const handleEmail = (e) => setEmail(e.target.value);
@@ -15,23 +12,22 @@ const VerifyEmailComponent = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if(validateForm()){
+        if (validateForm()) {
             try {
                 const response = await getUserByEmail(email);
-                if (response.data) {
-                    // Emailul există
+
+                if (response.data.message === "Email exist") {
                     navigator(`/updatePassword/${email}`);
-                } else 
-                if (response.data.message === "Email not exist") {
-                    alert("Email does not exist");
+                } 
+                else if(response.data.message === "Email dosen't exist"){
+                    alert("Email doesn't exist!");
                 }
             } catch (error) {
-                // Eroare de rețea sau eroare de server
-                alert('An error occurred: ' + error.message);
+                alert(error);
             }
-        };
-    }
-        
+        }
+    };
+
     const validateForm = () => {
         let valid = true;
         const errorsCopy = { ...errors };
@@ -39,43 +35,55 @@ const VerifyEmailComponent = () => {
         if (email.trim()) {
             errorsCopy.email = '';
         } else {
-            errorsCopy.email = "Email is required";
+            errorsCopy.email = 'Email is required';
             valid = false;
         }
 
         setErrors(errorsCopy);
 
         return valid;
-    }
+    };
 
     return (
-        <div className='container'>
-            <br /><br />
-            <div className='row'>
-                <div className='card col-md-6 offset-md-3 offset-md-3'>
-                    <h2 className='text-center'> Enter email</h2>
-                    <div className='card-body'>
-                        <form>
-                            <div className='form-group mb-2'>
-                                <label className='form-laber'>Email:</label>
-                                <input 
-                                    type='email'
-                                    placeholder='Enter your email'
-                                    name='email' 
-                                    value={email}
-                                    className={`form-control ${errors.email ? 'is-invalid': ''}`}
-                                    onChange={handleEmail}
-                                />
-                                {errors.email && <div className='invalid-feedback'> {errors.email} </div>}
-                            </div> 
-    
-                            <button className='btn btn-success' onClick={handleSubmit}> Submit  </button>
-                        </form>
+        <div className='background-image'>
+            <div className='container'>
+                <br /> <br /><br /> <br /> <br /><br />
+                <div className='row'>
+                    <div className='card col-md-5 mx-auto'>
+                        <div className='card-body card-body custom-card'>
+                            <h2 className='text-center mb-3' style={{ fontWeight: 'bold' }}>
+                                {' '}
+                                Verify email{' '}
+                            </h2>
+                            <form>
+                                <div className='form-group mb-2'>
+                                    <label className='form-laber' style={{ fontWeight: 'bold' }}>
+                                        Email:
+                                    </label>
+                                    <input
+                                        type='email'
+                                        placeholder='Enter email'
+                                        name='email'
+                                        value={email}
+                                        className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                                        onChange={handleEmail}
+                                        style={{ fontWeight: 'bold' }}
+                                    />
+                                    {errors.email && <div className='invalid-feedback'> {errors.email} </div>}
+                                </div>
+
+                                <div className='text-center mb-3 mt-4'>
+                                    <button className='btn-success btn-custom col-8' onClick={handleSubmit}>
+                                        Submit
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default VerifyEmailComponent;

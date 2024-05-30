@@ -21,7 +21,7 @@ public class UserDto {
     private int addressNumber;
     private String password;
     private String CUI;
-    private Collection<Role> roles;
+    private Role roles;
 
     @Builder
     public UserDto(String email) {

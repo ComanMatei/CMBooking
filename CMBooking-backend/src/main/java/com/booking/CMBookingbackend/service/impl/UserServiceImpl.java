@@ -9,15 +9,13 @@ import com.booking.CMBookingbackend.mapper.UserMapper;
 import com.booking.CMBookingbackend.repository.RoleRepository;
 import com.booking.CMBookingbackend.repository.UserRepository;
 import com.booking.CMBookingbackend.response.LoginResponse;
+import com.booking.CMBookingbackend.response.VerifyResponse;
 import com.booking.CMBookingbackend.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 @Service
 @AllArgsConstructor
@@ -36,14 +34,6 @@ public class UserServiceImpl implements UserService {
 
         User savedUser = userRepository.save(user);
 
-        System.out.println("Afisare user");
-        System.out.println("Id: " + savedUser.getId());
-        System.out.println("Id: " + savedUser.getFirstName());
-        System.out.println("Id: " + savedUser.getLastName());
-        System.out.println("Id: " + savedUser.getEmail());
-        System.out.println("cui: " + savedUser.getCUI());
-        System.out.println("Parola este: " + this.passwordEncoder.encode(savedUser.getPassword()));
-
         return UserMapper.mapToUserDto(savedUser);
     }
     @Override
@@ -53,10 +43,7 @@ public class UserServiceImpl implements UserService {
         Role role = roleRepository.findById(roleId)
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found with id:" + roleId));
 
-        user.addRole(role);
-
-        System.out.println("Id userlui este: " + userId);
-        System.out.println("id rolului este: " + roleId);
+        user.setRoles(role);
 
         User savedUser = userRepository.save(user);
         return UserMapper.mapToUserDto(savedUser);
@@ -90,42 +77,30 @@ public class UserServiceImpl implements UserService {
 
         UserDto userDto = UserMapper.mapToUserDto(user);
 
-        System.out.println("ID-ul utilizatorului cu email-ul " + email + " este " + user.getId());
-        System.out.println("Rolul userului este " + user.getRoles().toString());
-
         return userDto;
     }
 
     @Override
-    public UserDto findEmail(String email) {
-        User user = userRepository.findByEmail(email);
+    public VerifyResponse findEmail(String email) {
+        Optional<User> user = Optional.ofNullable(userRepository.findByEmail(email));
 
-        UserDto userDto = UserMapper.mapToUserDto(user);
-
-        if(userDto != null){
-            System.out.println("Emailul " + email + " exista!");
-            return new UserDto(email);
+        if (user.isPresent()) {
+            return new VerifyResponse("Email exist", true);
+        } else {
+            return new VerifyResponse("Email dosen't exist", false);
         }
-        System.out.println("Emailul " + email + " NU exista!");
-        return null;
-
     }
 
     @Override
     public UserDto updateForgotPassword(UserDto userDto, UserDto updatedUser) {
         User user = userRepository.findByEmail(userDto.getEmail());
         if (user == null) {
-            throw new RuntimeException("Utilizatorul nu există pentru adresa de email dată.");
+            throw new RuntimeException("User with this email dosen't exist");
         }
-        System.out.println(user.getFirstName() + " " + user.getLastName());
 
-        System.out.println(updatedUser.getPassword());
-        // Actualizează parola utilizatorului
         user.setPassword(this.passwordEncoder.encode(updatedUser.getPassword()));
-        // Salvează modificările în baza de date
         User updatedUserObj = userRepository.save(user);
 
-        // Returnează DTO-ul utilizatorului actualizat
         return UserMapper.mapToUserDto(updatedUserObj);
     }
 
@@ -139,9 +114,6 @@ public class UserServiceImpl implements UserService {
         }
         if (updatedUser.getLastName() != null) {
             user.setLastName(updatedUser.getLastName());
-        }
-        if (updatedUser.getEmail() != null) {
-            user.setEmail(updatedUser.getEmail());
         }
         if (updatedUser.getCity() != null) {
             user.setCity(updatedUser.getCity());

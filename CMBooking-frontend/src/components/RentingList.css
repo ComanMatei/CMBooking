@@ -1,0 +1,34 @@
+.renting-list-container {
+    background-color: #b0d475; /* Culoarea de fundal dorită */
+    padding: 20px; /* Adăugarea spațiului de padding */
+}
+
+.renting-list-heading {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.renting-item {
+    background-color: #84d99b;
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px; /* Reducerea padding-ului */
+    margin: 15px auto; /* Margin automat pe partea de sus și de jos, iar margin auto pe stânga și dreapta */
+    width: 80%; /* Ocuparea a 80% din lățimea ecranului */
+    max-width: 600px; /* Limitarea lățimii maxime pentru a evita prea multa extindere */
+}
+
+.property-name {
+    font-weight: bold;
+    font-size: 16px; /* Reducerea dimensiunii fontului */
+    margin-bottom: 5px; /* Reducerea margin-bottom */
+}
+
+.property-info {
+    margin-bottom: 3px; /* Reducerea margin-bottom */
+    margin-left: 10px; /* Ajustarea margin-left */
+}
+
+.bi {
+    vertical-align: middle;
+}

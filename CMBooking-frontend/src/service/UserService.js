@@ -9,7 +9,7 @@ export const assignRoleToUser = (userId, roleId) => {
     return axios.post(`${REST_API_BASE_URL}/${userId}/${roleId}`);
 };
 
-export const getUserByEmail = (userEmail) => axios.get(`${REST_API_BASE_URL}/verify-email/${userEmail}`, userEmail);
+export const getUserByEmail = (userEmail) => axios.post(`${REST_API_BASE_URL}/${userEmail}`, userEmail);
 
 export const updatePassword = (userEmail, user) => axios.put(REST_API_BASE_URL + '/' + userEmail , user);
 
